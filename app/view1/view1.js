@@ -1,4 +1,6 @@
 'use strict';
+var user='';
+var pw='';
 angular.module('myApp.view1', ['ngRoute','base64'])
 
 .config(['$routeProvider', function($routeProvider) {
@@ -25,7 +27,8 @@ angular.module('myApp.view1', ['ngRoute','base64'])
                 if(data.data.length==0){
                     alert('Falsche Zugangsdaten');
                 } else {
-                    var encPw = data.data;
+                    user = $scope.username;
+                    pw = data.data;
                     location.href = '#/view2';
                 }
             });

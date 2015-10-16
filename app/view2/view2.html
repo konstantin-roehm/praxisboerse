@@ -3,3 +3,7 @@
   Showing of 'interpolate' filter:
   {{ 'Current version is v%VERSION%.' | interpolate }}
 </p>
+<button ng-click="getOffers()">Hole Daten</button>
+<input type="text" ng-model="keyword"/>
+<button ng-click="filterList()">Suchen</button>
+<div ng-repeat="offer in offers">{{offer.shortDescription}}</div>
