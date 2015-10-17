@@ -38,6 +38,51 @@
 }
 /* Ende Style Login Formular */
 
+/* Start Style Angebotsliste */
+.offer-list{
+
+}
+.o-l-item{
+  border: 1px solid lightgrey;
+  border-radius:3px;
+  margin-bottom:10px;
+}
+.o-l-desc{
+
+}
+.o-l-comp{
+
+}
+.o-l-country{
+
+}
+.o-l-save{
+
+}
+.o-l-desc,.o-l-comp,.o-l-country,.o-l-save{
+  padding:10px;
+}
+/* Ende Style Angebotsliste */
+
+/* Start Style Filterformular */
+.filter-offers{
+  margin-bottom:25px;
+}
+.filter-offers .form-control{
+  max-width:200px;
+}
+.f-o-txt{
+
+}
+.f-o-type{
+
+}
+.f-o-country{
+
+}
+/* Ende Style Filterformular */
+
+/* Die Standardmaessigen Mediaqueries von Bootstrap */
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
 

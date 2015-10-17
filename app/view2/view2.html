@@ -1,9 +1,37 @@
-<p>This is the partial for view 2.</p>
-<p>
-  Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
-</p>
-<button ng-click="getOffers()">Hole Daten</button>
-<input type="text" ng-model="keyword"/>
-<button ng-click="filterList()">Suchen</button>
-<div ng-repeat="offer in offers">{{offer.shortDescription}}</div>
+<button ng-click="getOffers()" class="btn btn-default">Hole Daten</button>
+
+<form class="filter-offers container" name="filterOffers">
+  <div class="row">
+    <div class="f-o-txt col-sm-4 col-xs-12">
+      <label for="f-o-txt-input">Stichwort:</label>
+      <input id="f-o-txt-input" class="form-control" type="text" ng-model="keyword"/>
+      <button ng-click="filterList()" class="btn btn-default">Suchen</button>
+    </div>
+    <div class="f-o-type col-sm-4 col-xs-12">
+      <label for="f-o-t-input">Typ:</label>
+      <select id="f-o-t-input" name="offerType" class="form-control" ng-model="filter.offerType" ng-change="getOffers()">
+        <option value="internship">Praxissemester</option>
+        <option value="joboffer">Arbeit</option>
+        <option value="workingstudent">Werkstudent</option>
+        <option value="thesis">Abschlussarbeit</option>
+      </select>
+    </div>
+    <div class="f-o-country col-sm-4 col-xs-12">
+      <label for="f-o-c-input">Land:</label>
+      <select id="f-o-c-input" name="country" class="form-control" ng-model="filter.country" ng-init="filter.country = filter.country || options[0].value">
+        <option value="all">Alle</option>
+        <option ng-repeat="company in getUniqueCountryList(jobData.companies)" value="{{company.city}}">{{company.city}}</option>
+      </select>
+    </div>
+  </div>
+</form>
+<div class="offer-list container">
+  <div class="row o-l-item" ng-repeat="offer in jobData.offers | filter:filterCountry">
+    <div class="o-l-desc col-xs-12 col-sm-5" ng-click="openOfferDetails(offer.id)">{{offer.shortDescription}}</div>
+    <div class="o-l-comp col-xs-4 col-sm-3" ng-click="openCompanyDetails(offer.companyId)">{{getCompanyByID(offer.companyId).companyName}}</div>
+    <div class="o-l-country col-xs-4 col-sm-2">{{getCompanyByID(offer.companyId).city}}</div>
+    <div class="o-l-save col-xs-4 col-sm-2">
+      <button class="btn btn-default" ng-click="saveOffer(offer.id)">+ Merke</button>
+    </div>
+  </div>
+</div>
