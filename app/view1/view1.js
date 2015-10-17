@@ -18,19 +18,37 @@ angular.module('myApp.view1', ['ngRoute','base64'])
 
 .controller('View1Ctrl',['$scope','$log','$http','$base64', function($scope,$log,$http,$base64) {
         var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
-        $scope.login = function(){
-            $log.log('hallo');
-            $http.defaults.headers.common.Authorization = "Basic " + $base64.encode($scope.username + ":" + $scope.password);
-            var url = root +'/credential/encryptedpassword'; //gibt verschlüsseltes pw wieder
-            $http({method:'GET',url:url,headers:{'Accept': 'text/plain'}}).then(function(data) {
-                $log.log(data);
-                if(data.data.length==0){
-                    alert('Falsche Zugangsdaten');
-                } else {
-                    user = $scope.username;
-                    pw = data.data;
-                    location.href = '#/view2';
-                }
-            });
+        $scope.loginInvalid = false;
+        $scope.formMaster = {};
+        $scope.reset = function() {
+            $scope.user = angular.copy($scope.formMaster);
         };
+        $scope.login = function(){
+            if($scope.loginForm.username.$invalid||$scope.loginForm.password.$invalid){
+                $scope.loginInvalid = true;
+                $scope.reset();
+            } else {
+                //das hier läuft noch nicht. Es müsste eigentlich erst hierüber überprüft werden
+                //ob die nutzerdaten stimmen und danach kommt der request nach dem verschlüss. pw
+                /*var url = root +'/credential/check/'+$base64.encode($scope.user.name)+'/'+$base64.encode($scope.user.password);
+                $http({method:'GET',url:url}).then(function(data) {
+                    $log.log(data);
+                });*/
+
+                $http.defaults.headers.common.Authorization = "Basic " + $base64.encode($scope.user.name + ":" + $scope.user.password);
+                var url = root +'/credential/encryptedpassword'; //gibt verschlüsseltes pw wieder
+                $http({method:'GET',url:url,headers:{'Accept': 'text/plain'}}).then(function(data) {
+                    $log.log(data);
+                    if(data.data.length==0){ //bisher noch nicht funktional
+                        $scope.loginInvalid = true;
+                        $scope.reset();
+                    } else {
+                        user = $scope.user.name;
+                        pw = data.data;
+                        location.href = '#/view2';
+                    }
+                });
+            }
+        };
+        $scope.reset();
 }]);

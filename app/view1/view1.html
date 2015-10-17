@@ -1,10 +1,22 @@
-<p>This is the partial for view 1.</p>
-<form>
-    <label>Nutzername:
-    <input ng-model="username" type="text"/>
-    </label>
-    <label>Passwort:
-    <input ng-model="password" type="password"/>
-    </label>
-    <button ng-click="login()">Anmelden</button>
-</form>
+<div class="login-form container-fluid">
+    <div class="row l-f-center">
+        <div class="col-xs-12 l-f-headline">
+            <h1>Praxisb&ouml;rse</h1>
+        </div>
+        <div class="col-xs-12">
+            <form name="loginForm" novalidate>
+                <div ng-class="{'has-warning':loginInvalid}" class="form-group has-feedback">
+                    <input placeholder="Nutzername" ng-model="user.name" name="username" type="text" class="form-control" required/>
+                    <span ng-show="loginInvalid" class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>
+                </div>
+                <div ng-class="{'has-warning':loginInvalid}" class="form-group has-feedback">
+                    <input placeholder="Passwort" ng-model="user.password" name="password" type="password" class="form-control" required/>
+                    <span ng-show="loginInvalid" class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>
+                </div>
+                <span ng-show="loginInvalid" class="help-block">Der Nutzername oder das Passwort sind falsch.</span>
+                <button type="submit" class="btn btn-default" ng-click="login()">Anmelden</button>
+            </form>
+        </div>
+    </div>
+</div>
+
