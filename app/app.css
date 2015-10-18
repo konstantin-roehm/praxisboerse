@@ -80,7 +80,31 @@
 .f-o-country{
 
 }
+
+
 /* Ende Style Filterformular */
+
+/* Start Style Angebotsdetails */
+
+.o-d-dateAdded{
+
+}
+.o-d-validDate{
+
+}
+.o-d-usageSite{
+
+}
+.o-d-contact{
+
+}
+.o-d-tel{
+
+}
+.o-d-fax{
+
+}
+/* Ende Style Angebotsdetails */
 
 /* Die Standardmaessigen Mediaqueries von Bootstrap */
 /* Small devices (tablets, 768px and up) */
