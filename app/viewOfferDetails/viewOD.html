@@ -1,65 +1,56 @@
-<div class="container">
-
-    <!-- Trigger the modal with link to offer -->
-    <a ng-click="openOfferDetails(offer.id)" data-toggle="modal" data-target="#myModal">>{{offer.shortDescription}}</a>
+<!-- Modal -->
+<div class="modal fade" id="myModal{{offer.id}}" role="dialog">
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
+            <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="modal-header ng-scope">
+                    <h1 class="modal-title">Details zum Angebot</h1>
+                </div>
+                <div class="modal-body ng-scope">
+                    <div class="col-xs-12">
+                        <p>{{offer.description}}</p>
 
+                        <div class="form-group">
+                            <label for="o-d-dateAdded">Verfügbar seit:</label>
 
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <div class="modal-header ng-scope">
-                        <h1 class="modal-title">Details zum Angebot</h1>
-                    </div>
-                    <div class="modal-body ng-scope">
-                        <div class="col-xs-12">
-                            <p>{{offer.description}}</p>
-
-                            <div class="form-group">
-                                <label for="o-d-dateAdded">Verfügbar seit:</label>
-
-                                <p id="o-d-dateAdded">{{offer.dateAdded}}</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="o-d-validDate">Gültig bis:</label>
-
-                                <p id="o-d-validDate">{{offer.validDate}}</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="o-d-usageSite">Einsatzort:</label>
-
-                                <p id="o-d-usageSite">{{offer.usageSite}}</p>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="o-d-contact">Kontakt:</label>
-
-                                <p id="o-d-contact">{{offer.contact.formOfAddress}}&nbsp;{{offer.contact.firstName}}&nbsp;{{offer.contact.secondName}}</p>
-
-                                <p>{{offer.contact.email}}</p>
-                                <label for="o-d-tel">Tel.:</label>
-
-                                <p id="o-d-tel">{{offer.contact.telephone}}</p>
-                                <label for="o-d-fax">Fax:</label>
-
-                                <p id="o-d-fax">{{offer.contact.fax}}</p>
-                            </div>
+                            <p id="o-d-dateAdded">{{offer.dateAdded}}</p>
                         </div>
 
-                    </div>
-                    <div class="modal-footer ng scope">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                        <div class="form-group">
+                            <label for="o-d-validDate">Gültig bis:</label>
+
+                            <p id="o-d-validDate">{{offer.validDate}}</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="o-d-usageSite">Einsatzort:</label>
+
+                            <p id="o-d-usageSite">{{offer.usageSite}}</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="o-d-contact">Kontakt:</label>
+
+                            <p id="o-d-contact">{{offer.contact.formOfAddress}}&nbsp;{{offer.contact.firstName}}&nbsp;{{offer.contact.secondName}}</p>
+
+                            <p>{{offer.contact.email}}</p>
+                            <label for="o-d-tel">Tel.:</label>
+
+                            <p id="o-d-tel">{{offer.contact.telephone}}</p>
+                            <label for="o-d-fax">Fax:</label>
+
+                            <p id="o-d-fax">{{offer.contact.fax}}</p>
+                        </div>
                     </div>
 
                 </div>
+                <div class="modal-footer ng scope">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                </div>
+
             </div>
         </div>
-    </div>
-
 </div>
+

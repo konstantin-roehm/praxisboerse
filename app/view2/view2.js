@@ -39,6 +39,7 @@ angular.module('myApp.view2', ['ngRoute'])
         };
         $scope.offers = [];
         $scope.jobData = {};
+        /*  */
         $scope.getOffers = function(){
             $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
             var url = root +'/joboffer/offers/'+$scope.filter.offerType+'/0/100';
@@ -48,6 +49,11 @@ angular.module('myApp.view2', ['ngRoute'])
                 $scope.jobData = response.data;
             });
         };
+        /*jQuery(window).resize(function() {
+            if (jQuery(this).width() < 768) {
+                console.log('bla');
+            }
+        });*/
         $scope.getCompanyByID = function(id){
             return $scope.jobData.companies[id];
         };
@@ -78,8 +84,10 @@ angular.module('myApp.view2', ['ngRoute'])
             //$scope.offers = RESTService.getOffers($scope.keyword);
             $log.log($scope.offers);
         };
+        $scope.showDetails ={};
         $scope.openOfferDetails = function(offerID){
             $log.log("Öffne Offer Nr."+offerID);
+            $scope.showDetails[offerID] = true;
             //Hier die Detailansicht laden für ein Angebot
         };
         $scope.openCompanyDetails = function(companyID){

@@ -27,11 +27,12 @@
 </form>
 <div class="offer-list container">
   <div class="row o-l-item" ng-repeat="offer in jobData.offers | filter:filterCountry">
-    <div class="o-l-desc col-xs-12 col-sm-5" ng-click="openOfferDetails(offer.id)">{{offer.shortDescription}}</div>
+    <div class="o-l-desc col-xs-12 col-sm-5" data-toggle="modal" data-target="#myModal{{offer.id}}" ng-click="openOfferDetails(offer.id)">{{offer.shortDescription}}</div>
     <div class="o-l-comp col-xs-4 col-sm-3" ng-click="openCompanyDetails(offer.companyId)">{{getCompanyByID(offer.companyId).companyName}}</div>
     <div class="o-l-country col-xs-4 col-sm-2">{{getCompanyByID(offer.companyId).city}}</div>
     <div class="o-l-save col-xs-4 col-sm-2">
       <button class="btn btn-default" ng-click="saveOffer(offer.id)">+ Merke</button>
     </div>
+    <div class="o-l-detail col-xs-12 col-sm-12" ng-include="'viewOfferDetails/viewOD.html'"></div>
   </div>
 </div>
