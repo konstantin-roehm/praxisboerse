@@ -28,11 +28,27 @@
 <div class="offer-list container">
   <div class="row o-l-item" ng-repeat="offer in jobData.offers | filter:filterCountry">
     <div class="o-l-desc col-xs-12 col-sm-5" data-toggle="modal" data-target="#myModal{{offer.id}}" ng-click="openOfferDetails(offer.id)">{{offer.shortDescription}}</div>
-    <div class="o-l-comp col-xs-4 col-sm-3" ng-click="openCompanyDetails(offer.companyId)">{{getCompanyByID(offer.companyId).companyName}}</div>
+    <div class="o-l-comp col-xs-4 col-sm-3" data-toggle="modal" data-target="#myModalCompany{{offer.companyId}}" ng-click="openCompanyDetails(offer.companyId)">{{getCompanyByID(offer.companyId).companyName}}</div>
     <div class="o-l-country col-xs-4 col-sm-2">{{getCompanyByID(offer.companyId).city}}</div>
     <div class="o-l-save col-xs-4 col-sm-2">
       <button class="btn btn-default" ng-click="saveOffer(offer.id)">+ Merke</button>
     </div>
     <div class="o-l-detail col-xs-12 col-sm-12" ng-include="'viewOfferDetails/viewOD.html'"></div>
+    <div class="o-l-detail col-xs-12 col-sm-12" ng-include="'companyDetails/viewCompanyDetails.html'"></div>
   </div>
 </div>
+<nav ng-show="jobData.offers.length>10">
+  <ul class="pagination">
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li ng-repeat="n in getPaginationNumber(jobData.offers)"><a href="#">{{$index+1}}</a></li>
+    <li>
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

@@ -2,17 +2,13 @@
 
 angular.module('myApp.view2', ['ngRoute'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view2', {
-    templateUrl: 'view2/view2.html',
-    controller: 'View2Ctrl'
-  });
-}])
 .config(['$httpProvider',function($httpProvider) {
     // Cross-Domain-Aufrufe erlauben
     $httpProvider.defaults.useXDomain = true;
     // Das Mitsenden von Authentifizierungsinformationen erlauben
     $httpProvider.defaults.withCredentials = true;
+    //$httpProvider.defaults.headers.common['X-Requested-Width'] = 'XMLHttpRequest';
+
 }])
 .factory('RESTService', ['$http','$base64',
     function($http,$base64){
@@ -30,8 +26,8 @@ angular.module('myApp.view2', ['ngRoute'])
         return RESTService;
     }
 ])
-.controller('View2Ctrl',['$scope','$log','$http','$base64','RESTService',
-    function($scope,$log,$http,$base64,RESTService) {
+.controller('View2Ctrl',['$scope','$location','$log','$http','$base64','RESTService','CompanyDetails',
+    function($scope,$location,$log,$http,$base64,RESTService, CompanyDetails) {
         var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
         $scope.filter = {
             offerType:'thesis',
@@ -42,7 +38,7 @@ angular.module('myApp.view2', ['ngRoute'])
         /*  */
         $scope.getOffers = function(){
             $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-            var url = root +'/joboffer/offers/'+$scope.filter.offerType+'/0/100';
+            var url = root +'/joboffer/offers/'+$scope.filter.offerType+'/0/9';
             $http({method:'GET',url:url}).then(function(response) {
                 $log.log(response);
                 $scope.offers = response.data.offers;
@@ -87,16 +83,35 @@ angular.module('myApp.view2', ['ngRoute'])
         $scope.showDetails ={};
         $scope.openOfferDetails = function(offerID){
             $log.log("Öffne Offer Nr."+offerID);
-            $scope.showDetails[offerID] = true;
+            //$scope.showDetails[offerID] = true;
             //Hier die Detailansicht laden für ein Angebot
         };
         $scope.openCompanyDetails = function(companyID){
-            $log.log("Öffne Firma Nr."+companyID);
-            //Hier die Detailansicht laden für eine Firma
+            $log.log("?ffne Firma Nr."+companyID);
+
+            /*CompanyDetails.setCompany($scope.jobData.companies[companyID]);
+
+            var comp = CompanyDetails.getCompany();
+
+            $location.url('companyDetails');
+
+            $log.log("test");*/
+
+            //Hier die Detailansicht laden f?r eine Firma
         };
         $scope.saveOffer = function(offerID){
             $log.log("Speicher Offer Nr."+offerID);
             //OfferID abspeichern
+        }
+        $scope.getPaginationNumber = function(offers){
+            var ar = [];
+            if(offers !== undefined){
+                var pageCount = Math.ceil(offers.length/10);
+                for(var i=0;i<pageCount;i++){
+                    ar[i] = i;
+                }
+            }
+            return ar;
         }
     }
 ]);
