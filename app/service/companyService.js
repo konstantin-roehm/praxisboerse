@@ -1,5 +1,7 @@
 /**
  * Created by tpf on 20.10.15.
+ *
+ * Wird erstmal überflüssig
  */
 'use strict';
 

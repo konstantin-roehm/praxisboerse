@@ -3,10 +3,11 @@
 // Declare app level module which depends on views, and components
 angular.module('myApp', [
   'ngRoute',
+    'ng.deviceDetector',
   'myApp.view1',
   'myApp.view2',
-  'myApp.companyDetailsController',
-  'companyService',
+ // 'myApp.companyDetailsController',
+ // 'companyService',
   'myApp.version'
 ]).
 config(['$routeProvider', function($routeProvider) {
@@ -26,11 +27,11 @@ config(['$routeProvider', function($routeProvider) {
             controller: 'View2Ctrl'
           })
 
-          .when('/companyDetails', {
+     /*     .when('/companyDetails', {
             templateUrl: 'companyDetails/viewCompanyDetails.html',
             controller: 'CompanyDetailCtrl'
           })
-
+*/
       // .otherwise({redirectTo: 'view1'});
 
       // use the HTML5 History API

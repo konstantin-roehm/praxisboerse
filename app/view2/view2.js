@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.view2', ['ngRoute'])
+angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
 
 .config(['$httpProvider',function($httpProvider) {
     // Cross-Domain-Aufrufe erlauben
@@ -16,7 +16,7 @@ angular.module('myApp.view2', ['ngRoute'])
             getOffers : function(keyword){
                 var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
                 $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-                //laengenüberprüfung
+                //laengenï¿½berprï¿½fung
                 var url = root +'/joboffer/offers/thesis/'+keyword+'/0/10';
                 $http({method: 'GET', url: url}).then(function (daten) {
                     return daten.data.offers;
@@ -26,8 +26,8 @@ angular.module('myApp.view2', ['ngRoute'])
         return RESTService;
     }
 ])
-.controller('View2Ctrl',['$scope','$location','$log','$http','$base64','RESTService','CompanyDetails',
-    function($scope,$location,$log,$http,$base64,RESTService, CompanyDetails) {
+.controller('View2Ctrl',['$scope','$location','$log','$http','$base64','RESTService', 'deviceDetector',//'CompanyDetails',
+    function($scope,$location,$log,$http,$base64,RESTService, deviceDetector){ //, CompanyDetails) {
         var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
         $scope.filter = {
             offerType:'thesis',
@@ -35,15 +35,19 @@ angular.module('myApp.view2', ['ngRoute'])
         };
         $scope.offers = [];
         $scope.jobData = {};
+        $scope.company = {};
+
+        $scope.deviceDetection = deviceDetector;
         /*  */
         $scope.getOffers = function(){
             $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-            var url = root +'/joboffer/offers/'+$scope.filter.offerType+'/0/9';
+            var url = root +'/joboffer/offers/'+$scope.filter.offerType+'/0/-1';
             $http({method:'GET',url:url}).then(function(response) {
                 $log.log(response);
                 $scope.offers = response.data.offers;
                 $scope.jobData = response.data;
             });
+            $scope.showPagination();
         };
         /*jQuery(window).resize(function() {
             if (jQuery(this).width() < 768) {
@@ -82,21 +86,21 @@ angular.module('myApp.view2', ['ngRoute'])
         };
         $scope.showDetails ={};
         $scope.openOfferDetails = function(offerID){
-            $log.log("Öffne Offer Nr."+offerID);
+            $log.log("Ã–ffne Offer Nr."+offerID);
             //$scope.showDetails[offerID] = true;
-            //Hier die Detailansicht laden für ein Angebot
+            //Hier die Detailansicht laden fï¿½r ein Angebot
         };
         $scope.openCompanyDetails = function(companyID){
-            $log.log("?ffne Firma Nr."+companyID);
+            $log.log("Ã–ffne Firma Nr."+companyID);
 
-            /*CompanyDetails.setCompany($scope.jobData.companies[companyID]);
+            $scope.company = $scope.jobData.companies[companyID];
 
-            var comp = CompanyDetails.getCompany();
-
+            /*
+            CompanyDetails.setCompany($scope.jobData.companies[companyID]);
+            $scope.company = CompanyDetails.getCompany();
             $location.url('companyDetails');
-
-            $log.log("test");*/
-
+            $log.log("test");
+            */
             //Hier die Detailansicht laden f?r eine Firma
         };
         $scope.saveOffer = function(offerID){
@@ -113,6 +117,16 @@ angular.module('myApp.view2', ['ngRoute'])
             }
             return ar;
         }
+        $scope.showPagination = function(){
+            $log.log("Is mobile device: " + $scope.deviceDetection.isMobile());
+
+            if($scope.deviceDetection.isMobile() && jobData.offers != null && jobData.offers.length>10){
+                return true;
+            }else{
+                return false;
+            }
+        }
     }
 ]);
+
 

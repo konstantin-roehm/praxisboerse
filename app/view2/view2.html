@@ -34,10 +34,11 @@
       <button class="btn btn-default" ng-click="saveOffer(offer.id)">+ Merke</button>
     </div>
     <div class="o-l-detail col-xs-12 col-sm-12" ng-include="'viewOfferDetails/viewOD.html'"></div>
-    <div class="o-l-detail col-xs-12 col-sm-12" ng-include="'companyDetails/viewCompanyDetails.html'"></div>
-  </div>
+     <div class="o-l-detail col-xs-12 col-sm-12" ng-include="'companyDetails/viewCompanyDetails.html'"></div>
+    </div>
 </div>
-<nav ng-show="jobData.offers.length>10">
+
+<nav ng-show="showPagination()">
   <ul class="pagination">
     <li>
       <a href="#" aria-label="Previous">
