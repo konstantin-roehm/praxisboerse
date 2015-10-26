@@ -1,6 +1,6 @@
 /*
  * Wird vorerst auch nicht benötigt
- */
+ ***/
 'use strict';
 
 angular.module('myApp.companyDetailsController', ['ngRoute'])
