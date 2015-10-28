@@ -21,6 +21,8 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                 $http({method: 'GET', url: url}).then(function (daten) {
                     return daten.data.offers;
                 });
+
+
             }
         };
         return RESTService;
@@ -105,6 +107,18 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
         };
         $scope.saveOffer = function(offerID){
             $log.log("Speicher Offer Nr."+offerID);
+
+
+
+                $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
+                var url = root +'/joboffer/notepad/offer';
+                $http({method:'POST', data: offerID,url:url}).then(function(response) {
+                    $log.log(response);
+                   $log.log("Save to Merkliste Success");
+                });
+
+
+
             //OfferID abspeichern
         }
         $scope.getPaginationNumber = function(offers){
@@ -120,7 +134,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
         $scope.showPagination = function(){
             $log.log("Is mobile device: " + $scope.deviceDetection.isMobile());
 
-            if($scope.deviceDetection.isMobile() && jobData.offers != null && jobData.offers.length>10){
+            if($scope.deviceDetection.isMobile() && $scope.jobData.offers != null && $scope.jobData.offers.length>10){
                 return true;
             }else{
                 return false;
