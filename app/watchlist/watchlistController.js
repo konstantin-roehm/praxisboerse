@@ -17,7 +17,7 @@ angular.module('myApp.watchlistController', ['ngRoute'])
             };
             $scope.watchlist = {};
             $scope.watchlistOffers = [];
-
+            $scope.offer={};
 
 
         //    $scope.deviceDetection = deviceDetector;
@@ -53,6 +53,12 @@ angular.module('myApp.watchlistController', ['ngRoute'])
                 });
 
             }
+
+            $scope.openOfferDetails = function(selectedOffer){
+                $log.log("Öffne Offer Nr."+selectedOffer.id);
+                $log.log(selectedOffer);
+                $scope.offer = selectedOffer;
+            };
         }
 
 ]);

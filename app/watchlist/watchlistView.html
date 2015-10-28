@@ -2,14 +2,11 @@
 
 
 <div class="watchlist-list container">
-    <div class="row o-l-item" ng-repeat="offer in watchlistOffers track by offer.id">
-        <div class="o-l-desc col-xs-12 col-sm-5" data-toggle="modal" data-target="#myModal{{offer.id}}" ng-click="openOfferDetails(offer.id)">{{offer.shortDescription}}</div>
-        <div class="o-l-comp col-xs-4 col-sm-3" data-toggle="modal" data-target="#myModalCompany{{offer.companyId}}" ng-click="openCompanyDetails(offer.companyId)">{{getCompanyByID(offer.companyId).companyName}}</div>
-        <div class="o-l-country col-xs-4 col-sm-2">{{getCompanyByID(offer.companyId).city}}</div>
-        <div class="o-l-save col-xs-4 col-sm-2">
+    <div class="row o-l-item" ng-repeat="offer in watchlistOffers">
+        <div class="o-l-desc .col-xs-12 col-sm-10" data-toggle="modal" data-target="#myModalOffer" ng-click="openOfferDetails(offer)">{{offer.shortDescription}}</div>
+        <div class="o-l-save .col-xs-6 col-sm-2">
             <button class="btn btn-default" ng-click="removeFromWatchlist(offer.id)">Löschen</button>
         </div>
-        <div class="o-l-detail col-xs-12 col-sm-12" ng-include="'viewOfferDetails/viewOD.html'"></div>
-        <div class="o-l-detail col-xs-12 col-sm-12" ng-include="'companyDetails/viewCompanyDetails.html'"></div>
+        <div class="offerPopup" ng-include="'viewOfferDetails/viewOD.html'"></div>
     </div>
 </div>

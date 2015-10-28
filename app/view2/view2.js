@@ -113,6 +113,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
         $scope.openOfferDetails = function(index){
             $log.log("Öffne Offer Nr."+index);
             $scope.offer = $scope.offers[index];
+            $log.log( $scope.offer);
         };
         $scope.openCompanyDetails = function(companyID){
             $log.log("Öffne Firma Nr."+companyID);
