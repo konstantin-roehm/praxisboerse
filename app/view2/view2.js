@@ -7,8 +7,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
     $httpProvider.defaults.useXDomain = true;
     // Das Mitsenden von Authentifizierungsinformationen erlauben
     $httpProvider.defaults.withCredentials = true;
-    //$httpProvider.defaults.headers.common['X-Requested-Width'] = 'XMLHttpRequest';
-
+    //$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 }])
 .factory('RESTService', ['$http','$base64',
     function($http,$base64){
@@ -16,6 +15,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
             getOffers : function(keyword){
                 var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
                 $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
+                //$http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
                 //laengen�berpr�fung
                 var url = root +'/joboffer/offers/thesis/'+keyword+'/0/10';
                 $http({method: 'GET', url: url}).then(function (daten) {
@@ -34,26 +34,51 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
             country:'all'
         };
         $scope.offers = [];
+        $scope.offer={};
         $scope.jobData = {};
         $scope.company = {};
 
         $scope.deviceDetection = deviceDetector;
+        $scope.isMobile = $scope.deviceDetection.isMobile();
+
+        if(!$scope.isMobile){
+            var script = document.createElement("script");
+            script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyBSsGUEvpaUdzSUXS_S-5136GKJDNeVzTM";
+            document.body.appendChild(script);
+        }
+
+        $scope.startOffer = 0;
+        $scope.endOffer = -1;
         /*  */
+
         $scope.getOffers = function(){
+            if($scope.isMobile){
+                $scope.endOffer = 10;
+            }
             $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-            var url = root +'/joboffer/offers/'+$scope.filter.offerType+'/0/-1';
+            var url = root +'/joboffer/offers/'+$scope.filter.offerType+'/'+$scope.startOffer+'/'+$scope.endOffer;
             $http({method:'GET',url:url}).then(function(response) {
                 $log.log(response);
                 $scope.offers = response.data.offers;
                 $scope.jobData = response.data;
+                $log.log($scope.jobData);
             });
             $scope.showPagination();
+
         };
-        /*jQuery(window).resize(function() {
-            if (jQuery(this).width() < 768) {
-                console.log('bla');
+        $scope.changePage = function(pageID,event){
+            event.preventDefault();
+            if(pageID==-2 && $scope.startOffer+10<$scope.jobData.totalHits){
+                $scope.startOffer += 10;
+                $scope.getOffers();
+            } else if(pageID==-1 && $scope.startOffer>9){
+                $scope.startOffer -= 10;
+                $scope.getOffers();
+            } else if(pageID>0){
+                $scope.startOffer = pageID*10 - 10;
+                $scope.getOffers();
             }
-        });*/
+        };
         $scope.getCompanyByID = function(id){
             return $scope.jobData.companies[id];
         };
@@ -85,23 +110,44 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
             $log.log($scope.offers);
         };
         $scope.showDetails ={};
-        $scope.openOfferDetails = function(offerID){
-            $log.log("Öffne Offer Nr."+offerID);
-            //$scope.showDetails[offerID] = true;
-            //Hier die Detailansicht laden f�r ein Angebot
+        $scope.openOfferDetails = function(index){
+            $log.log("Öffne Offer Nr."+index);
+            $scope.offer = $scope.offers[index];
         };
         $scope.openCompanyDetails = function(companyID){
             $log.log("Öffne Firma Nr."+companyID);
 
             $scope.company = $scope.jobData.companies[companyID];
 
-            /*
-            CompanyDetails.setCompany($scope.jobData.companies[companyID]);
-            $scope.company = CompanyDetails.getCompany();
-            $location.url('companyDetails');
-            $log.log("test");
-            */
-            //Hier die Detailansicht laden f?r eine Firma
+            if(!$scope.isMobile){
+                var mapProp = {
+                    zoom:13,
+                    mapTypeId:google.maps.MapTypeId.ROADMAP
+                };
+                var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+                var marker;
+                var geocoder = new google.maps.Geocoder();
+
+                var address =  $scope.company.country + ',' + $scope.company.zipCode + ' ' + $scope.company.city + ',' +$scope.company.street;
+                geocoder.geocode( { 'address': address}, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        map.setCenter(results[0].geometry.location);
+                        marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location
+                        });
+                        marker.setMap(map);
+                    } else {
+                        $log.log('Adresse nicht gefunden');
+                    }
+                });
+
+                jQuery('#myModalCompany').on('shown.bs.modal', function (e) {
+                    google.maps.event.trigger(map,'resize');
+                    map.setCenter(marker.position);
+                });
+            }
+
         };
         $scope.saveOffer = function(offerID){
             $log.log("Speicher Offer Nr."+offerID);
@@ -110,7 +156,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
         $scope.getPaginationNumber = function(offers){
             var ar = [];
             if(offers !== undefined){
-                var pageCount = Math.ceil(offers.length/10);
+                var pageCount = Math.ceil($scope.jobData.totalHits/10);
                 for(var i=0;i<pageCount;i++){
                     ar[i] = i;
                 }
@@ -120,13 +166,20 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
         $scope.showPagination = function(){
             $log.log("Is mobile device: " + $scope.deviceDetection.isMobile());
 
-            if($scope.deviceDetection.isMobile() && jobData.offers != null && jobData.offers.length>10){
+            jQuery('.pagination>li').removeClass('active').eq($scope.startOffer/10 + 1).addClass('active');
+
+            if($scope.isMobile && $scope.jobData.offers != null && $scope.jobData.totalHits>=10){
                 return true;
             }else{
                 return false;
             }
         }
+        $scope.getOffers();
+
     }
 ]);
+$(document).ready(function(){
+
+});
 
 

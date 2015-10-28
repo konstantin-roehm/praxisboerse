@@ -4,9 +4,36 @@ var pw='';
 angular.module('myApp.view1', ['ngRoute','base64'])
 .config(['$httpProvider',function($httpProvider) {
 // Cross-Domain-Aufrufe erlauben
-      $httpProvider.defaults.useXDomain = true;
+    $httpProvider.defaults.useXDomain = true;
 // Das Mitsenden von Authentifizierungsinformationen erlauben
-      $httpProvider.defaults.withCredentials = true;
+    $httpProvider.defaults.withCredentials = true;
+    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    /*$httpProvider.interceptors.push(function($q) {
+        return {
+            'request': function(config) {
+                return config;
+            },
+
+            'response': function(response) {
+                if(response.status == 401){
+                    console.log('401 fehler');
+                    location.href = './';
+                }
+                console.log(response);
+                return response;
+            },
+            'responseError': function(rejection) {
+                console.log('error');
+                console.log(rejection);
+                if (rejection.status === 401) {
+
+                    // location.href = './';
+                    return false;
+                }
+                return $q.reject(rejection);
+            }
+        };
+    });*/
 }])
 
 .controller('View1Ctrl',['$scope','$log','$http','$base64', function($scope,$log,$http,$base64) {
