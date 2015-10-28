@@ -151,6 +151,18 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
         };
         $scope.saveOffer = function(offerID){
             $log.log("Speicher Offer Nr."+offerID);
+
+
+
+                $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
+                var url = root +'/joboffer/notepad/offer';
+                $http({method:'POST', data: offerID,url:url}).then(function(response) {
+                    $log.log(response);
+                   $log.log("Save to Merkliste Success");
+                });
+
+
+
             //OfferID abspeichern
         }
         $scope.getPaginationNumber = function(offers){

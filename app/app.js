@@ -6,6 +6,7 @@ angular.module('myApp', [
     'ng.deviceDetector',
   'myApp.view1',
   'myApp.view2',
+    'myApp.watchlistController',
  // 'myApp.companyDetailsController',
  // 'companyService',
   'myApp.version'
@@ -27,11 +28,11 @@ config(['$routeProvider', function($routeProvider) {
             controller: 'View2Ctrl'
           })
 
-     /*     .when('/companyDetails', {
-            templateUrl: 'companyDetails/viewCompanyDetails.html',
-            controller: 'CompanyDetailCtrl'
+          .when('/watchlist', {
+            templateUrl: 'watchlist/watchlistView.html',
+            controller: 'watchlistCtrl'
           })
-*/
+
       // .otherwise({redirectTo: 'view1'});
 
       // use the HTML5 History API
