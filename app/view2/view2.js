@@ -37,6 +37,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
         $scope.offer={};
         $scope.jobData = {};
         $scope.company = {};
+        $scope.keyword = '';
 
         $scope.deviceDetection = deviceDetector;
         $scope.isMobile = $scope.deviceDetection.isMobile();
@@ -56,7 +57,12 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                 $scope.endOffer = 10;
             }
             $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-            var url = root +'/joboffer/offers/'+$scope.filter.offerType+'/'+$scope.startOffer+'/'+$scope.endOffer;
+            var url = root +'/joboffer/offers/'+$scope.filter.offerType+'/'
+            if($scope.keyword.length>2){
+                url += $scope.keyword+'/'+$scope.startOffer+'/'+$scope.endOffer;
+            } else {
+                url += $scope.startOffer+'/'+$scope.endOffer;
+            }
             $http({method:'GET',url:url}).then(function(response) {
                 $log.log(response);
                 $scope.offers = response.data.offers;
@@ -105,9 +111,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
             return false;
         };
         $scope.filterList = function(){
-            //Laeuft nicht
-            //$scope.offers = RESTService.getOffers($scope.keyword);
-            $log.log($scope.offers);
+            $scope.getOffers();
         };
         $scope.showDetails ={};
         $scope.openOfferDetails = function(index){
@@ -149,6 +153,10 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                 });
             }
 
+        };
+        $scope.logout = function(){
+            user = '';
+            pw = '';
         };
         $scope.saveOffer = function(offerID){
             $log.log("Speicher Offer Nr."+offerID);
