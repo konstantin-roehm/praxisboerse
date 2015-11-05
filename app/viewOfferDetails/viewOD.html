@@ -4,8 +4,9 @@
 
         <div class="modal-dialog">
             <div class="modal-content">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
                 <div class="modal-header ng-scope">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h1 class="modal-title">Details zum Angebot</h1>
                 </div>
                 <div class="modal-body">
@@ -39,9 +40,12 @@
                             <label for="o-d-tel">Tel.:</label>
 
                             <p id="o-d-tel">{{offer.contact.telephone}}</p>
-                            <label for="o-d-fax">Fax:</label>
 
-                            <p id="o-d-fax">{{offer.contact.fax}}</p>
+                            <div ng-if="offer.contact.fax.length>0">
+                                <label for="o-d-fax">Fax:</label>
+
+                                <p id="o-d-fax">{{offer.contact.fax}}</p>
+                            </div>
                         </div>
                     </div>
 
