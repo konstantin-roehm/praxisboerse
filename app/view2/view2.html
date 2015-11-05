@@ -29,7 +29,8 @@
     <div class="o-l-comp col-xs-4 col-sm-3" data-toggle="modal" data-target="#myModalCompany" ng-click="openCompanyDetails(offer.companyId)">{{getCompanyByID(offer.companyId).companyName}}</div>
     <div class="o-l-country col-xs-4 col-sm-2">{{getCompanyByID(offer.companyId).city}}</div>
     <div class="o-l-save col-xs-4 col-sm-2">
-      <button class="btn btn-default" ng-click="saveOffer(offer.id)">+ Merke</button>
+      <button class="btn btn-default" ng-click="saveOffer(offer.id)" ng-show="!isAlreadyWatched(offer.id)"><i class="fa fa-plus-circle"></i>Merke</button>
+      <button class="btn btn-default" ng-click="removeOffer(offer.id)" ng-show="isAlreadyWatched(offer.id)"><i class="fa fa-minus-circle"></i>Merke</button>
     </div>
   </div>
 </div>

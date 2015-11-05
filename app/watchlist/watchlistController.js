@@ -6,40 +6,31 @@
 
 angular.module('myApp.watchlistController', ['ngRoute'])
 
-    .controller('watchlistCtrl', ['$scope', '$log', '$http','$base64',
+    .controller('watchlistCtrl', ['$scope', '$log', '$http','$base64', 'watchlistFactory',
 
-        function($scope, $log, $http, $base64) {
+        function($scope, $log, $http, $base64, watchlistFactory) {
 
-            var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
-            $scope.filter = {
-                offerType: 'thesis',
-                country: 'all'
-            };
             $scope.watchlist = {};
             $scope.watchlistOffers = [];
             $scope.offer={};
 
+            initWatchlist();
 
-        //    $scope.deviceDetection = deviceDetector;
-            /*  */
-            $scope.init = function () {
-                $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-                var url = root + '/joboffer/notepad/0/10';
-                $http({method: 'GET', url: url}).then(function (response) {
-                    $log.log(response);
-                    $scope.watchlist = response.data;
+            function initWatchlist() {
+                watchlistFactory.init().success(function (data) {
+                    $scope.watchlist = data;
                     $scope.watchlistOffers = $scope.watchlist.offers;
-                });
 
+                    $log.log("watchlistOffers");
+                    $log.log($scope.watchlistOffers);
+                })
+                    .error(function (error) {
+                        $scope.status = 'Unable to load customer data: ' + error.message;
+                    });
             }
 
-            $scope.init();
-
-
-            $scope.removeFromWatchlist = function(offerId){
-                $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-                var url = root + '/joboffer/notepad/offer/'+offerId;
-                $http({method: 'DELETE', url: url}).then(function (response) {
+            $scope.removeOffer = function(offerId){
+                watchlistFactory.removeFromWatchList(offerId).success(function(){
                     $scope.watchlistOffers = [];
 
                     for(var offer in $scope.watchlist.offers){
@@ -49,13 +40,13 @@ angular.module('myApp.watchlistController', ['ngRoute'])
                         }
 
                     }
-
+                }).error(function (error) {
+                    $scope.status = 'Unable to load customer data: ' + error.message;
                 });
-
-            }
+            };
 
             $scope.openOfferDetails = function(selectedOffer){
-                $log.log("Öffne Offer Nr."+selectedOffer.id);
+                $log.log("ï¿½ffne Offer Nr."+selectedOffer.id);
                 $log.log(selectedOffer);
                 $scope.offer = selectedOffer;
             };

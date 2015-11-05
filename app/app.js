@@ -7,6 +7,7 @@ angular.module('myApp', [
   'myApp.view1',
   'myApp.view2',
     'myApp.watchlistController',
+    'watchlistService',
  // 'myApp.companyDetailsController',
  // 'companyService',
   'myApp.version'
