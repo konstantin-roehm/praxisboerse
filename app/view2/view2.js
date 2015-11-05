@@ -37,10 +37,9 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
             $scope.offer = {};
             $scope.jobData = {};
             $scope.company = {};
-            $scope.keyword = '';
 
             $scope.tmpWatchlist = [];
-            initWatchlist();
+            initWatchlist()
 
             function initWatchlist() {
                 watchlistFactory.init().success(function (data) {
@@ -49,9 +48,11 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                         $scope.tmpWatchlist.push(data.offers[i].id);
 
                     }
+                    $log.log("tmpWatchlist");
+                    $log.log($scope.tmpWatchlist);
                 })
                     .error(function (error) {
-                        $scope.status = 'Unable to load watchlist data: ' + error.message;
+                        $scope.status = 'Unable to load customer data: ' + error.message;
                     });
             }
 
@@ -73,12 +74,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                     $scope.endOffer = 10;
                 }
                 $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-                var url = root +'/joboffer/offers/'+$scope.filter.offerType+'/';
-                if($scope.keyword.length>2){
-                    url += $scope.keyword+'/'+$scope.startOffer+'/'+$scope.endOffer;
-                } else {
-                    url += $scope.startOffer+'/'+$scope.endOffer;
-                }                
+                var url = root + '/joboffer/offers/' + $scope.filter.offerType + '/' + $scope.startOffer + '/' + $scope.endOffer;
                 $http({method: 'GET', url: url}).then(function (response) {
                     $log.log(response);
                     $scope.offers = response.data.offers;
@@ -127,7 +123,9 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                 return false;
             };
             $scope.filterList = function () {
-               $scope.getOffers();
+                //Laeuft nicht
+                //$scope.offers = RESTService.getOffers($scope.keyword);
+                $log.log($scope.offers);
             };
             $scope.showDetails = {};
             $scope.openOfferDetails = function (index) {
@@ -171,21 +169,30 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
 
             };
             $scope.saveOffer = function (offerID) {
+                $log.log("Speicher Offer Nr." + offerID);
+
                 watchlistFactory.addToWatchList(offerID);
                 $scope.tmpWatchlist.push(offerID);
+                $log.log("Push offer");
+                $log.log($scope.tmpWatchlist);
+
+                //OfferID abspeichern
             };
             $scope.removeOffer = function (offerID) {
                  watchlistFactory.removeFromWatchList(offerID);
-                 $scope.tmpWatchlist.splice($scope.tmpWatchlist.indexOf(offerID), 1);
 
+                 $scope.tmpWatchlist.splice($scope.tmpWatchlist.indexOf(offerID), 1);
+                $log.log("Remove offer");
+                $log.log($scope.tmpWatchlist);
             };
             $scope.isAlreadyWatched = function (offerId) {
+                $log.log($scope.tmpWatchlist.indexOf(offerId));
                 if($scope.tmpWatchlist.indexOf(offerId) != -1){
                     return true;
                 }else{
                     return false;
                 }
-            };
+            }
             $scope.getPaginationNumber = function (offers) {
                 var ar = [];
                 if (offers !== undefined) {
@@ -207,10 +214,6 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                     return false;
                 }
             }
-            $scope.logout = function(){
-                user = '';
-                pw = '';
-            };
             $scope.getOffers();
 
         }

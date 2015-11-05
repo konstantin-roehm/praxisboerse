@@ -3,18 +3,44 @@
  */
 
 'use strict';
-
+/*
+var addToWatchList;
+var removeFromWatchList;
+var initWatchList;
+var watchListOffers;
+*/
 angular.module('myApp.watchlistController', ['ngRoute'])
 
+/*
+    .factory('watchList', ['$log',function(){
+
+
+    return{
+        addOffer: function(offerId){
+            return addToWatchList(offerId);
+        },
+        removeOffer: function(offerId){
+            return removeFromWatchList(offerId);
+        },
+        init: function(){
+            return initWatchList;
+        },
+        getWatchlist: function(){
+            return watchListOffers;
+        }
+    };
+    }])*/
     .controller('watchlistCtrl', ['$scope', '$log', '$http','$base64', 'watchlistFactory',
 
         function($scope, $log, $http, $base64, watchlistFactory) {
 
+            var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
+
             $scope.watchlist = {};
-            $scope.watchlistOffers = [];
+          //  $scope.watchlistOffers = [];
             $scope.offer={};
 
-            initWatchlist();
+
 
             function initWatchlist() {
                 watchlistFactory.init().success(function (data) {
@@ -29,8 +55,47 @@ angular.module('myApp.watchlistController', ['ngRoute'])
                     });
             }
 
-            $scope.removeOffer = function(offerId){
-                watchlistFactory.removeFromWatchList(offerId).success(function(){
+            $scope.removeOffer = function (offerID) {
+                watchlistFactory.removeFromWatchList(offerID);
+
+
+            };
+
+
+        //    $scope.deviceDetection = deviceDetector;
+            /*
+            initWatchList = function () {
+                $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
+                var url = root + '/joboffer/notepad/0/10';
+                $http({method: 'GET', url: url}).then(function (response) {
+                    $log.log(response);
+                    $scope.watchlist = response.data;
+                    watchListOffers = $scope.watchlist.offers;
+                });
+
+            }
+*/
+           // initWatchList;
+          //  $scope.init();
+
+/*
+            addToWatchList = function(offerID){
+                $log.log("Speicher Offer Nr."+offerID);
+
+                $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
+                var url = root +'/joboffer/notepad/offer';
+                $http({method:'POST', data: offerID,url:url}).then(function(response) {
+                    $log.log(response);
+                    $log.log("Save to Merkliste Success");
+                });
+
+                //OfferID abspeichern
+            }
+
+            removeFromWatchList = function(offerId){
+                $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
+                var url = root + '/joboffer/notepad/offer/'+offerId;
+                $http({method: 'DELETE', url: url}).then(function (response) {
                     $scope.watchlistOffers = [];
 
                     for(var offer in $scope.watchlist.offers){
@@ -40,10 +105,11 @@ angular.module('myApp.watchlistController', ['ngRoute'])
                         }
 
                     }
-                }).error(function (error) {
-                    $scope.status = 'Unable to load customer data: ' + error.message;
+
                 });
-            };
+
+            }
+*/
 
             $scope.openOfferDetails = function(selectedOffer){
                 $log.log("�ffne Offer Nr."+selectedOffer.id);
