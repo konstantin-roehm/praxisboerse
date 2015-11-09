@@ -9,25 +9,8 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
         $httpProvider.defaults.withCredentials = true;
         //$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     }])
-    .factory('RESTService', ['$http', '$base64',
-        function ($http, $base64) {
-            var RESTService = {
-                getOffers: function (keyword) {
-                    var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
-                    $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-                    //$http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-                    //laengen�berpr�fung
-                    var url = root + '/joboffer/offers/thesis/' + keyword + '/0/10';
-                    $http({method: 'GET', url: url}).then(function (daten) {
-                        return daten.data.offers;
-                    });
-                }
-            };
-            return RESTService;
-        }
-    ])
-    .controller('View2Ctrl', ['$scope', '$location', '$log', '$http', '$base64', 'RESTService', 'deviceDetector', 'watchlistFactory',//'CompanyDetails',
-        function ($scope, $location, $log, $http, $base64, RESTService, deviceDetector, watchlistFactory) { //, CompanyDetails) {
+    .controller('View2Ctrl', ['$scope', '$location', '$log', '$http', '$base64', 'deviceDetector', 'watchlistFactory', 'restServiceFactory', 'userServiceFactory',//'CompanyDetails',
+        function ($scope, $location, $log, $http, $base64, deviceDetector, watchlistFactory, restServiceFactory, userServiceFactory) { //, CompanyDetails) {
             var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
             $scope.filter = {
                 offerType: 'thesis',
@@ -45,7 +28,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
             function initWatchlist() {
                 watchlistFactory.init().success(function (data) {
                     var watchDataList = data;
-                    for(var i = 0; i<data.offers.length; i++){
+                    for (var i = 0; i < data.offers.length; i++) {
                         $scope.tmpWatchlist.push(data.offers[i].id);
 
                     }
@@ -58,11 +41,13 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
             $scope.deviceDetection = deviceDetector;
             $scope.isMobile = $scope.deviceDetection.isMobile();
 
+            /*
             if (!$scope.isMobile) {
                 var script = document.createElement("script");
                 script.src = "http://maps.googleapis.com/maps/api/js?key=AIzaSyBSsGUEvpaUdzSUXS_S-5136GKJDNeVzTM";
                 document.body.appendChild(script);
             }
+            */
 
             $scope.startOffer = 0;
             $scope.endOffer = -1;
@@ -72,19 +57,22 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                 if ($scope.isMobile) {
                     $scope.endOffer = 10;
                 }
-                $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-                var url = root + '/joboffer/offers/' + $scope.filter.offerType + '/';
-                if($scope.keyword.length>2){
-                    url += $scope.keyword + '/' + $scope.startOffer + '/' + $scope.endOffer;
-                }else{
-                    url += $scope.startOffer + '/' + $scope.endOffer;
-                }
-                $http({method: 'GET', url: url}).then(function (response) {
-                    $log.log(response);
-                    $scope.offers = response.data.offers;
-                    $scope.jobData = response.data;
-                    $log.log($scope.jobData);
-                });
+
+
+                var promise = restServiceFactory.getOffers($scope.keyword, $scope.filter.offerType, $scope.startOffer, $scope.endOffer);
+                promise.then(function (response) {
+
+                        $log.log(response);
+                        $scope.offers = response.offers;
+                        $scope.jobData = response;
+
+                        $log.log($scope.jobData);
+
+                    }, function (reason) {
+                        $scope.status = 'Unable to load offer data: ' + error.message;
+                    }
+                );
+
                 $scope.showPagination();
 
             };
@@ -170,22 +158,19 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                 }
 
             };
-            $scope.logout = function(){
-                user = '';
-                pw = '';
-            }
+
             $scope.saveOffer = function (offerID) {
                 watchlistFactory.addToWatchList(offerID);
                 $scope.tmpWatchlist.push(offerID);
             };
             $scope.removeOffer = function (offerID) {
-                 watchlistFactory.removeFromWatchList(offerID);
-                 $scope.tmpWatchlist.splice($scope.tmpWatchlist.indexOf(offerID), 1);
+                watchlistFactory.removeFromWatchList(offerID);
+                $scope.tmpWatchlist.splice($scope.tmpWatchlist.indexOf(offerID), 1);
             };
             $scope.isAlreadyWatched = function (offerId) {
-                if($scope.tmpWatchlist.indexOf(offerId) != -1){
+                if ($scope.tmpWatchlist.indexOf(offerId) != -1) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
             }
@@ -210,13 +195,11 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                     return false;
                 }
             }
+            userServiceFactory.logout();
             $scope.getOffers();
 
         }
     ])
 ;
-$(document).ready(function () {
-
-});
 
 
