@@ -12,7 +12,7 @@ angular.module('myApp', [
     'restService',
     'myApp.version'
 ]).
-    config(['$routeProvider', function ($routeProvider) {
+    config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'view1/view1.html',
@@ -37,5 +37,13 @@ angular.module('myApp', [
         // .otherwise({redirectTo: 'view1'});
 
         // use the HTML5 History API
-        //  $locationProvider.html5Mode(true);
-    }]);
+          $locationProvider.html5Mode(true);
+
+
+    }])
+    .config(['$httpProvider',function($httpProvider) {
+        // Cross-Domain-Aufrufe erlauben
+        $httpProvider.defaults.useXDomain = true;
+        $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    }])
+;

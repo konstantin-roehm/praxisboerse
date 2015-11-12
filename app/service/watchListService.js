@@ -10,8 +10,6 @@ angular.module('watchlistService', [])
 
         var watchlistFactory = {};
         var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
-        $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-
 
         watchlistFactory.init = function(){
             return $http.get(root + '/joboffer/notepad/0/10');

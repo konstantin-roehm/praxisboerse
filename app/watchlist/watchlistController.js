@@ -9,7 +9,7 @@ angular.module('myApp.watchlistController', ['ngRoute'])
     .controller('watchlistCtrl', ['$scope', '$log', '$http','$base64', 'watchlistFactory',
 
         function($scope, $log, $http, $base64, watchlistFactory) {
-
+            $scope.showNavbar = true;
             $scope.watchlist = {};
             $scope.watchlistOffers = [];
             $scope.offer={};

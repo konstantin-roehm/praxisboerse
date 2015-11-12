@@ -2,13 +2,6 @@
 
 angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
 
-    .config(['$httpProvider', function ($httpProvider) {
-        // Cross-Domain-Aufrufe erlauben
-        $httpProvider.defaults.useXDomain = true;
-        // Das Mitsenden von Authentifizierungsinformationen erlauben
-        $httpProvider.defaults.withCredentials = true;
-        //$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    }])
     .controller('View2Ctrl', ['$scope', '$location', '$log', '$http', '$base64', 'deviceDetector', 'watchlistFactory', 'restServiceFactory', 'userServiceFactory',//'CompanyDetails',
         function ($scope, $location, $log, $http, $base64, deviceDetector, watchlistFactory, restServiceFactory, userServiceFactory) { //, CompanyDetails) {
             var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
@@ -16,6 +9,8 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                 offerType: 'thesis',
                 country: 'all'
             };
+            $scope.showNavbar = true;
+
             $scope.offers = [];
             $scope.offer = {};
             $scope.jobData = {};
@@ -23,7 +18,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
             $scope.keyword = '';
 
             $scope.tmpWatchlist = [];
-            initWatchlist()
+            initWatchlist();
 
             function initWatchlist() {
                 watchlistFactory.init().success(function (data) {
@@ -195,6 +190,7 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                     return false;
                 }
             }
+
             userServiceFactory.logout();
             $scope.getOffers();
 

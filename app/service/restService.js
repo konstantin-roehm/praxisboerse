@@ -9,8 +9,6 @@ angular.module('restService', [])
 
         var restServiceFactory = {};
         var root = 'http://www.iwi.hs-karlsruhe.de/Intranetaccess/REST';
-        $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(user + ":" + pw);
-
 
         var cKeyword = '';
         var cOfferType = '';
