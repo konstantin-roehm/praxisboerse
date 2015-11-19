@@ -22,7 +22,7 @@
  <!-- <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBSsGUEvpaUdzSUXS_S-5136GKJDNeVzTM"></script>-->
 </head>
 <body>
-<nav ng-if="$location.path() != 'view1'" class="navbar navbar-default">
+<nav ng-if="showSection" class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
@@ -48,6 +48,9 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
   <div class="container viewHolder" ng-view></div>
+<div class="loadWrapper" ng-show="showLoading">
+  <div class="loadIcon"><i class="fa fa-spinner fa-pulse fa-3x"></i></div>
+</div>
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->

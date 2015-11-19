@@ -1,9 +1,9 @@
 <form class="filter-offers container" name="filterOffers">
-  <div class="row">{{showNavbar}}
+  <div class="row">
     <div class="f-o-txt col-sm-4 col-xs-12">
       <label for="f-o-txt-input">Stichwort:</label>
       <input id="f-o-txt-input" class="form-control" type="text" ng-model="keyword"/>
-      <button ng-click="filterList()" class="btn btn-default">Suchen</button>
+      <button ng-click="filterList()" class="btn btn-primary searchBtn">Suchen</button>
     </div>
     <div class="f-o-type col-sm-4 col-xs-12">
       <label for="f-o-t-input">Typ:</label>
@@ -29,8 +29,8 @@
     <div class="o-l-comp col-xs-4 col-sm-3" data-toggle="modal" data-target="#myModalCompany" ng-click="openCompanyDetails(offer.companyId)">{{getCompanyByID(offer.companyId).companyName}}</div>
     <div class="o-l-country col-xs-4 col-sm-2">{{getCompanyByID(offer.companyId).city}}</div>
     <div class="o-l-save col-xs-4 col-sm-2">
-      <button class="btn btn-default" ng-click="saveOffer(offer.id)" ng-show="!isAlreadyWatched(offer.id)"><i class="fa fa-plus-circle"></i>Merke</button>
-      <button class="btn btn-default" ng-click="removeOffer(offer.id)" ng-show="isAlreadyWatched(offer.id)"><i class="fa fa-minus-circle"></i>Merke</button>
+      <button class="btn btn-success" ng-click="saveOffer(offer.id)" ng-show="!isAlreadyWatched(offer.id)"><i class="fa fa-plus-circle fa-lg"></i></button>
+      <button class="btn btn-danger" ng-click="removeOffer(offer.id)" ng-show="isAlreadyWatched(offer.id)"><i class="fa fa-minus-circle fa-lg"></i></button>
     </div>
   </div>
 </div>

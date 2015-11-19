@@ -40,7 +40,24 @@ h1 > .fa{
   }
 }
 /* Ende Style Login Formular */
-
+.loadWrapper{
+  display:table;
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0px;
+  left:0px;
+  z-index: 10;
+  background:rgba(255,255,255,0.5);
+}
+.loadIcon{
+  display:table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+.searchBtn{
+  margin-top:0.5rem;
+}
 /* Start Style Angebotsliste */
 .offer-list{
 

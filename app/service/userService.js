@@ -14,8 +14,6 @@ angular.module('userService', ['base64'])
         var pw = '';
 
         userFactory.login = function(username, password){
-            $log.log(password);
-            $log.log(pw)
 
             $http.defaults.headers.common.Authorization = "Basic " + $base64.encode(username + ":" + password);
 
@@ -25,7 +23,6 @@ angular.module('userService', ['base64'])
 
 
             $http({method:'GET',url:url, headers:{'Accept': 'text/plain'}}).then(function(data) {
-                $log.log(data);
                 if(data.data.length==0){ //bisher noch nicht funktional
                     deferred.reject(true);
                 } else {

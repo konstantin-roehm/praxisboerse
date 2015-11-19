@@ -9,7 +9,6 @@ angular.module('myApp.view2', ['ngRoute', "ng.deviceDetector"])
                 offerType: 'thesis',
                 country: 'all'
             };
-            $scope.showNavbar = true;
 
             $scope.offers = [];
             $scope.offer = {};

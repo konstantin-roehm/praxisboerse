@@ -32,18 +32,19 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="o-d-contact">Kontakt:</label>
-
-                            <p id="o-d-contact">{{offer.contact.formOfAddress}}&nbsp;{{offer.contact.firstName}}&nbsp;{{offer.contact.secondName}}</p>
-
-                            <p>{{offer.contact.email}}</p>
-                            <label for="o-d-tel">Tel.:</label>
-
-                            <p id="o-d-tel">{{offer.contact.telephone}}</p>
-
+                            <div>
+                                <label for="o-d-contact">Kontakt:</label>
+                                <p id="o-d-contact">{{offer.contact.formOfAddress}}&nbsp;{{offer.contact.firstName}}&nbsp;{{offer.contact.secondName}}</p>
+                            </div>
+                            <div ng-if="offer.contact.email.length>0">
+                                <p>{{offer.contact.email}}</p>
+                            </div>
+                            <div ng-if="offer.contact.telephone.length>0">
+                                <label for="o-d-tel">Tel.:</label>
+                                <p id="o-d-tel">{{offer.contact.telephone}}</p>
+                            </div>
                             <div ng-if="offer.contact.fax.length>0">
                                 <label for="o-d-fax">Fax:</label>
-
                                 <p id="o-d-fax">{{offer.contact.fax}}</p>
                             </div>
                         </div>
@@ -51,7 +52,7 @@
 
                 </div>
                 <div class="modal-footer ng scope">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
                 </div>
 
             </div>

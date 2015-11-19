@@ -12,6 +12,11 @@ angular.module('myApp', [
     'restService',
     'myApp.version'
 ]).
+    run(function($rootScope, $location) {
+        $rootScope.$on('$routeChangeSuccess', function() {
+            $rootScope.showSection = $location.path() !== "/view1";
+        });
+    }).
     config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
@@ -45,5 +50,18 @@ angular.module('myApp', [
         // Cross-Domain-Aufrufe erlauben
         $httpProvider.defaults.useXDomain = true;
         $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+        $httpProvider.interceptors.push(function($q, $rootScope) {
+            return {
+                'request': function(config) {
+                    $rootScope.showLoading = true;
+                    return config || $q.when(config);
+                },
+                'response': function(response) {
+                    $rootScope.showLoading = false;
+                    return response || $q.when(response);
+                }
+            };
+        });
     }])
 ;

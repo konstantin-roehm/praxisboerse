@@ -5,8 +5,11 @@
     <div class="row o-l-item" ng-repeat="offer in watchlistOffers">
         <div class="o-l-desc .col-xs-12 col-sm-10" data-toggle="modal" data-target="#myModalOffer" ng-click="openOfferDetails(offer)">{{offer.shortDescription}}</div>
         <div class="o-l-save .col-xs-6 col-sm-2">
-            <button class="btn btn-default" ng-click="removeOffer(offer.id)(offer.id)">Löschen</button>
+            <button class="btn btn-danger" ng-click="removeOffer(offer.id)(offer.id)"><i class="fa fa-minus-circle fa-lg"></i></button>
         </div>
         <div class="offerPopup" ng-include="'viewOfferDetails/viewOD.html'"></div>
     </div>
+</div>
+<div class="watchlist-info" ng-if="watchlistOffers.length==0">
+    Ihre Merkliste ist leer!
 </div>

@@ -2,8 +2,8 @@
 
 angular.module('myApp.view1', ['ngRoute', 'base64'])
 
-    .controller('View1Ctrl', ['$scope', '$log', '$http', '$base64', '$location','userServiceFactory', function ($scope, $log, $http, $base64, $location, userServiceFactory) {
-
+    .controller('View1Ctrl', ['$scope', '$log', '$http', '$base64', '$location','userServiceFactory','$rootScope', function ($scope, $log, $http, $base64, $location, userServiceFactory,$rootScope) {
+        $rootScope.showSection = false;
         $scope.showNavbar = false;
         $scope.loginInvalid = false;
         $scope.formMaster = {};
