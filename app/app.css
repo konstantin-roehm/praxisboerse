@@ -50,11 +50,39 @@ h1 > .fa{
   z-index: 10;
   background:rgba(255,255,255,0.5);
 }
+.loadWrapper .fa-spinner{
+  position: absolute;
+}
 .loadIcon{
   display:table-cell;
   vertical-align: middle;
   text-align: center;
 }
+.spaceshuttle{
+  transform-origin: 25px 25px;
+  position: absolute;
+  -webkit-animation: myOrbit 1.5s linear infinite;
+  -moz-animation: myOrbit 1.5s linear infinite;
+  -o-animation: myOrbit 1.5s linear infinite;
+  animation: myOrbit 1.5s linear infinite;
+}
+@-webkit-keyframes myOrbit {
+  from { -webkit-transform: rotate(0deg) translateX(75px); }
+  to   { -webkit-transform: rotate(360deg) translateX(75px); }
+}
+@-moz-keyframes myOrbit {
+  from { -moz-transform: rotate(0deg) translateX(75px); }
+  to   { -moz-transform: rotate(360deg) translateX(75px); }
+}
+@-o-keyframes myOrbit {
+  from { -o-transform: rotate(0deg) translateX(75px); }
+  to   { -o-transform: rotate(360deg) translateX(75px); }
+}
+@keyframes myOrbit {
+  from { transform: rotate(0deg) translateX(75px); }
+  to   { transform: rotate(360deg) translateX(75px); }
+}
+
 .searchBtn{
   margin-top:0.5rem;
 }
